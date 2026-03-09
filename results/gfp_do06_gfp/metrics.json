@@ -1,0 +1,81 @@
+{
+  "target": "gfp",
+  "config_path": "configs/chip_joint.json",
+  "hyperparameters": {
+    "batch_size": 32,
+    "num_epochs": 50,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-06,
+    "pooling_type": "mean",
+    "nl_size": 1024,
+    "dropout": 0.6,
+    "activation": "relu",
+    "early_stopping": 5,
+    "reverse_complement": false,
+    "reverse_complement_likelihood": 0.5,
+    "stage2_lr": 1e-05,
+    "stage2_epochs": 50,
+    "stage2_patience": 5,
+    "fasta_path": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/genome/ce11.fa",
+    "bigwig_gfp": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR16-GFP-1Aligned.sortedByCoord_removeDup.out.bw",
+    "bigwig_polii": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR17-PolII-1Aligned.sortedByCoord_removeDup.out.bw"
+  },
+  "stage1_test": {
+    "pearson_r": 0.5257008671760559,
+    "spearman_rho": 0.31331952972666965,
+    "mse": 0.3423105478286743
+  },
+  "stage1_best_epoch": 2,
+  "stage1_epochs_trained": 7,
+  "stage2_test": {
+    "pearson_r": 0.5342491865158081,
+    "spearman_rho": 0.3053686657146321,
+    "mse": 0.3400743007659912
+  },
+  "stage2_best_epoch": 2,
+  "stage2_epochs_trained": 7,
+  "best_epoch_test": {
+    "pearson_r": 0.5342491865158081,
+    "spearman_rho": 0.3053686657146321,
+    "mse": 0.3400743007659912
+  },
+  "history": {
+    "stage1_train_loss": [
+      0.7884888911300997,
+      0.6770040305267926,
+      0.6348716728389263,
+      0.5940590114332736,
+      0.5597223714995448,
+      0.5217171507206575,
+      0.49437744274575224
+    ],
+    "stage1_valid_loss": [
+      0.47543234515721633,
+      0.4662203448616965,
+      0.4852240746465142,
+      0.5441404665304217,
+      0.49705234135554477,
+      0.6707239204626174,
+      0.5153480879013326
+    ],
+    "stage2_train_loss": [
+      0.5967320185271509,
+      0.5650494676100016,
+      0.5321264057987667,
+      0.4879732030939551,
+      0.4248412743779934,
+      0.3449423940815566,
+      0.2684931999170906
+    ],
+    "stage2_valid_loss": [
+      0.47036354253641993,
+      0.4653086370122154,
+      0.46989873047293246,
+      0.47723985211073466,
+      0.484837708263134,
+      0.5036309294149501,
+      0.4761348637789804
+    ]
+  },
+  "timestamp": "2026-03-09T16:20:14"
+}

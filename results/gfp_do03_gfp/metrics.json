@@ -1,0 +1,81 @@
+{
+  "target": "gfp",
+  "config_path": "configs/chip_joint.json",
+  "hyperparameters": {
+    "batch_size": 32,
+    "num_epochs": 50,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-06,
+    "pooling_type": "mean",
+    "nl_size": 1024,
+    "dropout": 0.3,
+    "activation": "relu",
+    "early_stopping": 5,
+    "reverse_complement": false,
+    "reverse_complement_likelihood": 0.5,
+    "stage2_lr": 1e-05,
+    "stage2_epochs": 50,
+    "stage2_patience": 5,
+    "fasta_path": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/genome/ce11.fa",
+    "bigwig_gfp": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR16-GFP-1Aligned.sortedByCoord_removeDup.out.bw",
+    "bigwig_polii": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR17-PolII-1Aligned.sortedByCoord_removeDup.out.bw"
+  },
+  "stage1_test": {
+    "pearson_r": 0.5241329669952393,
+    "spearman_rho": 0.312960442854948,
+    "mse": 0.3437376618385315
+  },
+  "stage1_best_epoch": 2,
+  "stage1_epochs_trained": 7,
+  "stage2_test": {
+    "pearson_r": 0.5362195372581482,
+    "spearman_rho": 0.3047325976496047,
+    "mse": 0.3387186527252197
+  },
+  "stage2_best_epoch": 2,
+  "stage2_epochs_trained": 7,
+  "best_epoch_test": {
+    "pearson_r": 0.5362195372581482,
+    "spearman_rho": 0.3047325976496047,
+    "mse": 0.3387186527252197
+  },
+  "history": {
+    "stage1_train_loss": [
+      0.7888737128493393,
+      0.6772492638552114,
+      0.6354534299994108,
+      0.5948320126601605,
+      0.5602585892793873,
+      0.5219823439542111,
+      0.4949305338107423
+    ],
+    "stage1_valid_loss": [
+      0.476956732594853,
+      0.4673363439374922,
+      0.4842442327442,
+      0.5519098265930978,
+      0.49181583513072724,
+      0.6791295123517893,
+      0.5186841498087545
+    ],
+    "stage2_train_loss": [
+      0.5973811025571037,
+      0.5656273324379704,
+      0.5326283476640901,
+      0.4885843189459922,
+      0.42601365131479574,
+      0.3475392976947676,
+      0.27199636560808
+    ],
+    "stage2_valid_loss": [
+      0.47140246789087786,
+      0.4659945274448129,
+      0.4715464566211412,
+      0.4780036180167441,
+      0.4856421588079691,
+      0.5086212024456503,
+      0.4793960324739701
+    ]
+  },
+  "timestamp": "2026-03-09T16:18:35"
+}

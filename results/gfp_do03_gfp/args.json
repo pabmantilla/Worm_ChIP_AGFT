@@ -1,0 +1,25 @@
+{
+  "hp": {
+    "batch_size": 32,
+    "num_epochs": 50,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-06,
+    "pooling_type": "mean",
+    "nl_size": 1024,
+    "dropout": 0.3,
+    "activation": "relu",
+    "early_stopping": 5,
+    "reverse_complement": false,
+    "reverse_complement_likelihood": 0.5,
+    "stage2_lr": 1e-05,
+    "stage2_epochs": 50,
+    "stage2_patience": 5,
+    "fasta_path": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/genome/ce11.fa",
+    "bigwig_gfp": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR16-GFP-1Aligned.sortedByCoord_removeDup.out.bw",
+    "bigwig_polii": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR17-PolII-1Aligned.sortedByCoord_removeDup.out.bw"
+  },
+  "config": "configs/chip_joint.json",
+  "target": "gfp",
+  "name": "gfp_do03_gfp",
+  "skip_stage2": false
+}

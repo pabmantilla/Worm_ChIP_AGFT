@@ -1,0 +1,86 @@
+{
+  "target": "gfp",
+  "config_path": "configs/chip_log2fc.json",
+  "hyperparameters": {
+    "batch_size": 32,
+    "num_epochs": 50,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-06,
+    "pooling_type": "mean",
+    "nl_size": 1024,
+    "dropout": 0.5,
+    "activation": "relu",
+    "early_stopping": 5,
+    "reverse_complement": false,
+    "reverse_complement_likelihood": 0.5,
+    "aggregation": "mean",
+    "stage2_lr": 1e-05,
+    "stage2_epochs": 50,
+    "stage2_patience": 5,
+    "fasta_path": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/genome/ce11.fa",
+    "bigwig_gfp": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR16-GFP-1_log2ratio_vs_Input.sortedByCoord_removeDup.bw",
+    "bigwig_polii": "/grid/wsbs/home_norepl/pmantill/Worm_ChiP/data/DR17-PolII-1_log2ratio_vs_Input.sortedByCoord_removeDup.bw"
+  },
+  "stage1_test": {
+    "pearson_r": 0.6779280304908752,
+    "spearman_rho": 0.6869345316618748,
+    "mse": 0.052679117769002914
+  },
+  "stage1_best_epoch": 3,
+  "stage1_epochs_trained": 8,
+  "stage2_test": {
+    "pearson_r": 0.6806954145431519,
+    "spearman_rho": 0.6864126935607167,
+    "mse": 0.05170067399740219
+  },
+  "stage2_best_epoch": 3,
+  "stage2_epochs_trained": 8,
+  "best_epoch_test": {
+    "pearson_r": 0.6806954145431519,
+    "spearman_rho": 0.6864126935607167,
+    "mse": 0.05170067399740219
+  },
+  "history": {
+    "stage1_train_loss": [
+      0.08845665695837314,
+      0.050836594165485104,
+      0.04808432511015313,
+      0.046353638750773855,
+      0.04488126916782146,
+      0.04371846402156361,
+      0.0426597297745732,
+      0.04174933295082721
+    ],
+    "stage1_valid_loss": [
+      0.05582989303043187,
+      0.053438733535524134,
+      0.05213014641875548,
+      0.05237044359610719,
+      0.05303400169243352,
+      0.052686193048352904,
+      0.05396153166842688,
+      0.053685752073828835
+    ],
+    "stage2_train_loss": [
+      0.04455789449113208,
+      0.04303544233492349,
+      0.04114533602648795,
+      0.039638690331736455,
+      0.03795361775664054,
+      0.03614011196770914,
+      0.03410886786767632,
+      0.03194898534908643
+    ],
+    "stage2_valid_loss": [
+      0.052084992934342655,
+      0.05258217120578714,
+      0.05203370890340861,
+      0.05254120971699049,
+      0.05269394864005901,
+      0.052892959326695486,
+      0.05332582747670495,
+      0.05502975285606906
+    ]
+  },
+  "timestamp": "2026-03-09T16:51:22"
+}

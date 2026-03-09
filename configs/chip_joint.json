@@ -1,0 +1,26 @@
+{
+  "data": {
+    "fasta_path": "genome/ce11.fa",
+    "bigwig_gfp": "data/DR16-GFP-1Aligned.sortedByCoord_removeDup.out.bw",
+    "bigwig_polii": "data/DR17-PolII-1Aligned.sortedByCoord_removeDup.out.bw",
+    "window_size": 1000,
+    "batch_size": 32
+  },
+  "model": {
+    "pooling_type": "mean",
+    "nl_size": 1024,
+    "do": 0.1,
+    "activation": "relu"
+  },
+  "training": {
+    "num_epochs": 50,
+    "learning_rate": 1e-3,
+    "weight_decay": 1e-6,
+    "early_stopping_patience": 5
+  },
+  "two_stage": {
+    "second_stage_lr": 1e-5,
+    "second_stage_epochs": 50,
+    "early_stopping_patience": 5
+  }
+}

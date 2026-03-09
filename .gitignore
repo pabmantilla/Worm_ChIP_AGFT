@@ -1,0 +1,27 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Data (large binary files)
+data/*.bw
+data/*.gff.txt
+genome/*.fa
+genome/*.fa.fai
+
+# Model checkpoints & results (large)
+results/*/checkpoints/
+results/*/*.npz
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Git submodule / clone
+alphagenome_ft/
+
+# Misc
+.claude/
+test_run/
+interp/results/
