@@ -104,6 +104,9 @@ def parse_args():
     parser.add_argument("--stage2-epochs", type=int, default=None)
     parser.add_argument("--stage2-patience", type=int, default=None)
     parser.add_argument("--skip-stage2", action="store_true")
+    parser.add_argument("--organism", type=str, default="human",
+                        choices=["human", "mouse"],
+                        help="Organism embedding (default: human)")
 
     return parser.parse_args()
 
@@ -431,7 +434,8 @@ def main():
     print(f"Trainable (head only): {head_count:,}")
 
     # ---- Organism / strand setup ----
-    organism_enum = dna_model.Organism.HOMO_SAPIENS
+    organism_enum = (dna_model.Organism.MUS_MUSCULUS if args.organism == "mouse"
+                     else dna_model.Organism.HOMO_SAPIENS)
     strand_reindexing = jax.device_put(
         model._metadata[organism_enum].strand_reindexing,
         model._device_context._device,
@@ -447,15 +451,16 @@ def main():
         raise ValueError("Both bigwig_gfp and bigwig_polii must be set in config")
 
     agg = hp["aggregation"]
+    org_idx = 1 if args.organism == "mouse" else 0
     train_ds = ChIPDataset(fasta_path, gfp_path, polii_path, split="train",
                            window_size=WINDOW_SIZE,
                            reverse_complement=hp["reverse_complement"],
                            reverse_complement_likelihood=hp["reverse_complement_likelihood"],
-                           aggregation=agg)
+                           aggregation=agg, organism_index=org_idx)
     val_ds = ChIPDataset(fasta_path, gfp_path, polii_path, split="val",
-                         window_size=WINDOW_SIZE, aggregation=agg)
+                         window_size=WINDOW_SIZE, aggregation=agg, organism_index=org_idx)
     test_ds = ChIPDataset(fasta_path, gfp_path, polii_path, split="test",
-                          window_size=WINDOW_SIZE, aggregation=agg)
+                          window_size=WINDOW_SIZE, aggregation=agg, organism_index=org_idx)
 
     train_loader = ChIPDataLoader(train_ds, batch_size=hp["batch_size"], shuffle=True)
     val_loader = ChIPDataLoader(val_ds, batch_size=hp["batch_size"], shuffle=False)

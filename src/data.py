@@ -48,6 +48,9 @@ class ChIPDataset:
         reverse_complement_likelihood: float = 0.5,
         rng_key: jax.Array | None = None,
         aggregation: str = "log1p_sum",
+        organism_index: int = 0,
+        ranking_bigwig_path: str | None = None,
+        top_bottom_pct: float | None = None,
     ):
         assert split in ("train", "val", "test"), f"Unknown split: {split}"
         assert aggregation in ("log1p_sum", "mean"), (
@@ -61,6 +64,7 @@ class ChIPDataset:
         self.reverse_complement = reverse_complement
         self.reverse_complement_likelihood = reverse_complement_likelihood
         self._aggregation = aggregation
+        self._organism_index = organism_index
 
         if rng_key is None:
             self.rng_key = jax.random.PRNGKey(42)
@@ -78,11 +82,56 @@ class ChIPDataset:
             for start in range(0, chrom_len - window_size + 1, window_size):
                 self._windows.append((chrom, start, start + window_size))
 
-        print(f"ChIPDataset [{split}]: {len(self._windows)} windows "
-              f"({window_size}bp) across {chroms}")
+        total_windows = len(self._windows)
+
+        # Rank windows by log2FC if a ranking BigWig is provided
+        self._scores = None
+        if ranking_bigwig_path is not None:
+            self._scores = self._compute_ranking_scores(ranking_bigwig_path)
+            # Sort windows (and scores) descending by score — top peaks first
+            order = np.argsort(self._scores)[::-1]
+            self._windows = [self._windows[i] for i in order]
+            self._scores = self._scores[order]
+
+            # Select top + bottom N% if requested
+            if top_bottom_pct is not None:
+                assert 0 < top_bottom_pct <= 50, (
+                    "top_bottom_pct must be in (0, 50]"
+                )
+                n_select = max(1, int(total_windows * top_bottom_pct / 100))
+                top_idx = list(range(n_select))
+                bottom_idx = list(range(total_windows - n_select, total_windows))
+                keep = sorted(set(top_idx + bottom_idx))
+                self._windows = [self._windows[i] for i in keep]
+                self._scores = self._scores[keep]
+                print(f"ChIPDataset [{split}]: selected top+bottom "
+                      f"{top_bottom_pct}% = {len(self._windows)} windows "
+                      f"(top {n_select} + bottom {n_select})")
+
+        print(f"ChIPDataset [{split}]: {len(self._windows)}/{total_windows} "
+              f"windows ({window_size}bp) across {chroms}")
 
     def __len__(self):
         return len(self._windows)
+
+    @property
+    def scores(self) -> np.ndarray | None:
+        """Per-window ranking scores (descending), or None if no ranking."""
+        return self._scores
+
+    def _compute_ranking_scores(self, ranking_bigwig_path: str) -> np.ndarray:
+        """Compute mean log2FC per window from a ranking BigWig file."""
+        bw = pyBigWig.open(ranking_bigwig_path)
+        scores = np.empty(len(self._windows), dtype=np.float32)
+        for i, (chrom, start, end) in enumerate(self._windows):
+            vals = bw.values(chrom, start, end)
+            scores[i] = np.nanmean(vals)
+        bw.close()
+        # Replace any remaining NaN with 0
+        np.nan_to_num(scores, copy=False, nan=0.0)
+        print(f"  Ranking scores: min={scores.min():.3f}, "
+              f"max={scores.max():.3f}, median={np.median(scores):.3f}")
+        return scores
 
     @staticmethod
     def _one_hot(seq: str) -> np.ndarray:
@@ -140,7 +189,7 @@ class ChIPDataset:
             "seq": jnp.array(seq_ohe),
             "y_gfp": y_gfp,
             "y_polii": y_polii,
-            "organism_index": jnp.array([0]),
+            "organism_index": jnp.array([self._organism_index]),
         }
 
 
